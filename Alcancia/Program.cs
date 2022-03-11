@@ -1,26 +1,13 @@
 ﻿namespace Alcancia
 {
-    class Alcancia
+    public static class Program
     {
-        static void Main (string[] args)
+        static void Main(string[] args)
         {
-            int moneda = 0;
-            int cantMone1 = 0;
-            int cantMone2 = 0;
-            int cantMone3 = 0;
-            int cantMone4 = 0;
-            int cantMone5 = 0;
-
-            int total1 = 0;
-            int total2 = 0;
-            int total3 = 0;
-            int total4 = 0;
-            int total5 = 0;
-            int total = 0;
-            int pregunta = 0;
-
             int opcionDigitada = 0;
             int x;
+
+            Acciones accion = new Acciones();
 
             while (opcionDigitada != 4)
             {
@@ -36,92 +23,15 @@
                 if (int.TryParse(opcionDigitada2, out x))
                 {
                     opcionDigitada = int.Parse(opcionDigitada2);
-                    
+
                     switch (opcionDigitada)
                     {
                         case 1:
-                            do
-                            {
-                                System.Console.WriteLine("Ingrese la denominacion de la moneda");
-                                System.Console.WriteLine("Valores: 50 , 100, 200, 500, 1000");
-                                moneda = System.Convert.ToInt32(System.Console.ReadLine());
-
-                                if (moneda == 50 || moneda == 100 || moneda == 200 || moneda == 500 || moneda == 1000)
-                                {
-                                    switch (moneda)
-                                    {
-                                        case 50:
-                                            System.Console.WriteLine("Ingresaste 50");
-                                            System.Console.WriteLine("Ingrese la cantidad cantidad");
-                                            cantMone1 = System.Convert.ToInt32(System.Console.ReadLine());
-                                            total1 = moneda * cantMone1;
-                                            System.Console.WriteLine(total1);
-                                            break;
-                                        case 100:
-                                            System.Console.WriteLine("Ingresaste 100");
-                                            System.Console.WriteLine("Ingrese la cantidad cantidad");
-                                            cantMone2 = System.Convert.ToInt32(System.Console.ReadLine());
-                                            total2 = moneda * cantMone2;
-                                            System.Console.WriteLine(total2);
-                                            break;
-                                        case 200:
-                                            System.Console.WriteLine("Ingresaste 200");
-                                            System.Console.WriteLine("Ingrese la cantidad cantidad");
-                                            cantMone3 = System.Convert.ToInt32(System.Console.ReadLine());
-                                            total3 = moneda * cantMone3;
-                                            System.Console.WriteLine(total3);
-                                            break;
-                                        case 500:
-                                            System.Console.WriteLine("Ingresaste 500");
-                                            System.Console.WriteLine("Ingrese la cantidad cantidad");
-                                            cantMone4 = System.Convert.ToInt32(System.Console.ReadLine());
-                                            total4 = moneda * cantMone4;
-                                            System.Console.WriteLine(total4);
-                                            break;
-                                        case 1000:
-                                            System.Console.WriteLine("Ingresaste 1000");
-                                            System.Console.WriteLine("Ingrese la cantidad cantidad");
-                                            cantMone5 = System.Convert.ToInt32(System.Console.ReadLine());
-                                            total5 = moneda * cantMone5;
-                                            System.Console.WriteLine(total5);
-                                            break;
-                                    }
-
-                                    int cantMone1total = cantMone1 + cantMone1;
-
-                                    total = total1 + total2 + total3 + total4 + total5;
-                                    System.Console.WriteLine("El total de su alcancía es de: " + total);
-
-                                }
-                                else
-                                {
-                                    System.Console.WriteLine("Ingrese una denominación existente");
-                                }
-
-                                System.Console.WriteLine("¿Quiere ingresar una moneda?");
-                                pregunta = System.Convert.ToInt32(Console.ReadLine());
-
-                            } while (pregunta == 1);
-
+                            accion.Ingresar();
                             break;
 
                         case 2:
-                            System.Console.WriteLine("¿De que denominación quiere saber la cantidad?");
-                            Console.WriteLine("1. 50");
-                            Console.WriteLine("2. 100");
-                            Console.WriteLine("3. 200");
-                            Console.WriteLine("4. 500");
-                            Console.WriteLine("5. 1000");
-
-                            int opciondenom = System.Convert.ToInt32(System.Console.ReadLine());
-
-                            switch (opciondenom)
-                            {
-                                case 1:
-                                    System.Console.WriteLine("Hay " + cantMone1 + " monedas de 500" );
-                                    break;
-                            }
-
+                            accion.Listar();
                             break;
 
                         case 3:
@@ -134,7 +44,6 @@
 
                         default:
                             Console.WriteLine("La opcion seleccionada no se encuentra disponible.");
-
                             break;
                     }
                 }
@@ -145,9 +54,157 @@
                 }
             }
 
+        }
 
+        public class Moneda
+        {
 
+            public Moneda()
+            {
+                int denominacion = 0;
 
+            }
+
+            public Moneda(int pdenominacion)
+            {
+                denominacion = pdenominacion;
+            }
+
+            public int denominacion { get; set; }
+        }
+
+        public class DatosMoneda
+        {
+            public static List<Moneda> MonedaList = new List<Moneda>();
+        }
+
+        public class Acciones
+        {
+            public void Ingresar()
+            {
+                int pregunta = 0;
+                do
+                {
+                    Console.WriteLine("Ingrese la denominacion");
+                    Console.WriteLine("Valores: 50 , 100, 200, 500, 1000");
+                    int denominacion = int.Parse(Console.ReadLine());
+
+                    if (denominacion == 50 || denominacion == 100 || denominacion == 200 || denominacion == 500 || denominacion == 1000)
+                    {
+                        Moneda moneda = new Moneda();
+                        moneda.denominacion = denominacion;
+
+                        DatosMoneda.MonedaList.Add(moneda);
+
+                        System.Console.WriteLine("¿Quiere ingresar una moneda?");
+                        pregunta = System.Convert.ToInt32(Console.ReadLine());
+
+                        int suma = DatosMoneda.MonedaList.Sum(item => item.denominacion);
+
+                        Console.WriteLine("___________________________");
+                        Console.WriteLine("Cantidad total: " + suma);
+                        Console.WriteLine("___________________________");
+                    }
+                } while (pregunta == 1);
+
+            }
+
+            public void Listar()
+            {
+                List<Moneda> lista = DatosMoneda.MonedaList.ToList();
+
+                int opcion = 0;
+                int x;
+
+                int i = 0;
+
+                while (opcion != 6)
+                {
+                    Console.WriteLine("___________________________");
+                    Console.WriteLine("1. Mostrar de 50");
+                    Console.WriteLine("2. Mostrar de 100");
+                    Console.WriteLine("3. Mostrar de 200");
+                    Console.WriteLine("4. Mostrar de 500");
+                    Console.WriteLine("5. Mostrar de 1000");
+                    Console.WriteLine("___________________________");
+                    Console.WriteLine("Ingrese una opcion: ");
+
+                    string opcion2 = Console.ReadLine();
+
+                    if (int.TryParse(opcion2, out x))
+                    {
+                        opcion = int.Parse(opcion2);
+
+                        switch (opcion)
+                        {
+                            case 1:
+                                foreach (Moneda item in lista)
+                                {
+
+                                    if (item.denominacion == 50)
+                                    {
+                                        Console.WriteLine("Cantidad: " + lista.Count);
+                                    }
+                                }
+                                break;
+
+                            case 2:
+                                foreach (Moneda item in lista)
+                                {
+
+                                    if (item.denominacion == 100)
+                                    {
+                                        Console.WriteLine("Cantidad: " + lista.Count);
+                                    }
+                                }
+                                break;
+
+                            case 3:
+                                foreach (Moneda item in lista)
+                                {
+
+                                    if (item.denominacion == 200)
+                                    {
+                                        Console.WriteLine("Cantidad: " + lista.Count);
+                                    }
+                                }
+                                break;
+
+                            case 4:
+                                foreach (Moneda item in lista)
+                                {
+
+                                    if (item.denominacion == 500)
+                                    {
+                                        Console.WriteLine("Cantidad: " + lista.Count);
+                                    }
+                                }
+                                break;
+
+                            case 5:
+                                foreach (Moneda item in lista)
+                                {
+
+                                    if (item.denominacion == 1000)
+                                    {
+                                        Console.WriteLine("Cantidad: " + lista.Count);
+                                    }
+                                }
+                                break;
+
+                            default:
+                                Console.WriteLine("La opcion seleccionada no se encuentra disponible.");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        opcion = 0;
+                        Console.WriteLine("La opcion seleccionada no se encuentra disponible.");
+                    }
+                }
+            }
         }
     }
 }
+
